@@ -25,7 +25,7 @@ def load_model():
 
     model_path = os.path.join(
         base_dir,
-        "diabetes_gradient_boosting_model.pkl"
+        "diabetes_hist_gradient_boosting_model.pkl"
     )
 
     preprocessor_path = os.path.join(
