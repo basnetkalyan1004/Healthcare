@@ -1012,11 +1012,10 @@ with st.expander("How this model was built"):
 # FOOTER
 # =========================================================
 
-st.markdown(
-    """
+html("""
     <div class="foot">
         <b>Diabetes AI Predictor</b><br>
         Python · scikit-learn · Streamlit<br>
-        Educational and research use only
+        Built by Kalyan Basnet · Educational and research use only
     </div>
     """)
