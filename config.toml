@@ -1,0 +1,11 @@
+# Put this file at  .streamlit/config.toml  next to app.py
+# It makes Streamlit's own widgets (dropdowns, tables, tooltips)
+# match the dark indigo canvas instead of fighting it.
+
+[theme]
+base = "dark"
+primaryColor = "#7C5CFF"
+backgroundColor = "#120E32"
+secondaryBackgroundColor = "#1C1650"
+textColor = "#F2EFFF"
+font = "sans serif"
