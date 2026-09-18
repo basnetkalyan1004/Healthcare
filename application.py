@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+import textwrap
 
 # =========================================================
 # PAGE CONFIGURATION
@@ -13,6 +14,25 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# =========================================================
+# HTML HELPER
+# =========================================================
+#
+# Streamlit runs every st.markdown string through a markdown parser
+# first. Any line indented four or more spaces becomes a code block,
+# and a blank line ends a raw-HTML block — which is why nicely
+# indented markup shows up on screen as plain text. This strips the
+# indentation and the blank lines before handing the markup over.
+# =========================================================
+
+def html(markup):
+    lines = [line.strip() for line in textwrap.dedent(markup).splitlines()]
+    st.markdown(
+        "\n".join(line for line in lines if line),
+        unsafe_allow_html=True
+    )
+
 
 # =========================================================
 # LOAD MODEL
@@ -100,8 +120,7 @@ def risk_band(probability):
 #   element on the page reads off that same scale.
 # =========================================================
 
-st.markdown(
-    """
+html("""
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -581,9 +600,7 @@ st.markdown(
     }
 
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """)
 
 
 # =========================================================
@@ -592,15 +609,12 @@ st.markdown(
 
 with st.sidebar:
 
-    st.markdown(
-        """
+    html("""
         <div class="brand">
             <div class="brand-dot">🩺</div>
             <div class="brand-name">Diabetes AI</div>
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+        """)
 
     st.caption("Gradient boosting risk estimation")
 
@@ -608,8 +622,7 @@ with st.sidebar:
 
     st.markdown("### How it works")
 
-    st.markdown(
-        """
+    html("""
         <div class="sidebar-fact">
             <span>Algorithm</span><span>HistGradientBoosting</span>
         </div>
@@ -622,9 +635,7 @@ with st.sidebar:
         <div class="sidebar-fact">
             <span>Features</span><span>8 inputs</span>
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+        """)
 
     st.markdown("### Measured performance")
 
@@ -644,8 +655,7 @@ with st.sidebar:
 # HERO
 # =========================================================
 
-st.markdown(
-    """
+html("""
     <div class="hero">
 
         <div class="hero-eyebrow">
@@ -672,17 +682,14 @@ st.markdown(
         </div>
 
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """)
 
 
 # =========================================================
 # STAT RAIL
 # =========================================================
 
-st.markdown(
-    """
+html("""
     <div class="rail">
 
         <div class="rail-item">
@@ -706,24 +713,19 @@ st.markdown(
         </div>
 
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """)
 
 
 # =========================================================
 # PATIENT INPUT
 # =========================================================
 
-st.markdown(
-    """
+html("""
     <div class="section-title">Patient assessment</div>
     <div class="section-sub">
         Nothing is stored. Values stay in this session only.
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """)
 
 with st.form("patient_form"):
 
@@ -885,8 +887,7 @@ if predict:
             for name, hex_code in bands
         )
 
-        st.markdown(
-            f"""
+        html(f"""
             <div class="result-shell" style="--c:{color}">
 
                 <div class="gauge" style="--p:{probability_percent:.2f};
@@ -909,19 +910,14 @@ if predict:
                 <div class="band-row">{band_chips}</div>
 
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+            """)
 
         # -------------------------------------------------
         # PATIENT SUMMARY
         # -------------------------------------------------
 
-        st.markdown(
-            '<div class="section-title" style="margin-top:34px">'
-            "What went in</div>",
-            unsafe_allow_html=True
-        )
+        html('<div class="section-title" style="margin-top:34px">'
+             "What went in</div>")
 
         s1, s2, s3, s4 = st.columns(4)
 
@@ -965,20 +961,14 @@ if predict:
         # INTERPRETATION
         # -------------------------------------------------
 
-        st.markdown(
-            '<div class="section-title" style="margin-top:30px">'
-            "Reading the number</div>",
-            unsafe_allow_html=True
-        )
+        html('<div class="section-title" style="margin-top:30px">'
+             "Reading the number</div>")
 
-        st.markdown(
-            f"""
+        html(f"""
             <div class="callout" style="--c:{color}">
                 <b>{label} band.</b> {message}
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+            """)
 
         st.caption(
             "A model estimates patterns, not diagnoses. Confirm anything "
@@ -994,8 +984,7 @@ st.divider()
 
 with st.expander("How this model was built"):
 
-    st.markdown(
-        """
+    html("""
         The predictor is a supervised classifier trained to estimate the
         probability that a person has diabetes, given eight routinely
         collected values.
@@ -1030,6 +1019,4 @@ st.markdown(
         Python · scikit-learn · Streamlit<br>
         Educational and research use only
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """)
